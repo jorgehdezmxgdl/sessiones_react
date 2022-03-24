@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { ReactSession } from 'react-client-session';
+import Barra from './components/Barra';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  constructor(props) {
+    super(props)
+    //ReactSession.setStoreType("cookie")
+    ReactSession.setStoreType("cookie")
+  }
+ 
+  componentDidMount() {
+      // try {
+      //    const valor = ReactSession.get('usuario')
+      //    console.log("Tramap:", valor)
+      // } catch (err) {
+      //   console.log("Entra aqui")
+      //   ReactSession.set('usuario','jorge')
+      // } 
+      fetch('http://localhost:4000/api/v1/token').then((response)=>
+        response.json()
+      ).then(data => {
+        console.log(data)
+        ReactSession.set('token',data.token);
+      })
+
+      
+  }
+
+
+  render() {
+    return (
+      <div>
+        App
+        <Barra/>
+      </div>
+    )
+  }
 }
-
-export default App;
